@@ -23,7 +23,7 @@ def index():
 
 # This route will trigger the webscraping, but it will then send us back to the index route to render the results
 @app.route("/scrape")
-def scrape():
+def scraper():
 
     # scrape_mars.scrape() is a custom function that we've defined in the scrape_mars.py file within this directory
     mars_info
