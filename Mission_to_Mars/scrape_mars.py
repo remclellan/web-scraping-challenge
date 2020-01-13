@@ -7,7 +7,10 @@ import pandas as pd
 
 def init_browser():
     executable_path = {'executable_path': os.path.join("..","Resources","chromedriver.exe")}
-    return browser = Browser('chrome', **executable_path, headless=False)
+    return Browser('chrome', **executable_path, headless=False)
+
+# create dictionary variable to import to MongoDB
+mars_info = {}
 
 def scrape_mars():
     browser = init_browser()
@@ -26,6 +29,8 @@ def scrape_mars():
     div = soup.find('div', attrs={'class': 'content_title'})
     news_title = div.find('a').text
     news_p = soup.find('div', attrs={'class': 'article_teaser_body'}).text
+    mars_info['news_title'] = news_title
+    mars_info['news_p'] = news_p
 
     # JPL Mars Featured Image
     browser.visit(url_jpl)
@@ -38,10 +43,11 @@ def scrape_mars():
         image_html = browser.html
         image_soup = BeautifulSoup(image_html, 'html.parser')
         img_partialpath = image_soup.find('img', class_='fancybox-image')['src']
-    except ElementNotVisibleException:
-        print(e)
+    except:
+        img_partialpath = "/#"
         
     featured_image_url = urljoin(url_jpl, img_partialpath)
+    mars_info['featured_image_url'] = featured_image_url
 
     # Mars Weather
     browser.visit(url_weather)    
@@ -49,6 +55,7 @@ def scrape_mars():
     soup = BeautifulSoup(html, 'html.parser')
     div = soup.find('div', attrs={'class': 'js-tweet-text-container'})
     mars_weather = div.find('p').text
+    mars_info['mars_weather'] = mars_weather
 
     # Mars Facts
     tables = pd.read_html(url_facts)
@@ -57,6 +64,7 @@ def scrape_mars():
     df.head()
     html_table = df.to_html()
     html_table
+    mars_info['html_table'] = html_table
 
     # Mars Hemispheres
     browser.visit(url_USGS)
@@ -79,17 +87,17 @@ def scrape_mars():
             hemisphere_img = hemi_soup.body.find('img', class_='wide-image')
             hemi_partialpath = hemisphere_img['src']
         except:
-            print("nope")
             hemi_partialpath ="/#"
         
         hemisphere_image["img_url"] = urljoin(url_USGS, hemi_partialpath)
         browser.visit(url_USGS)
     
         hemisphere_image_urls.append(hemisphere_image)
+        mars_info['hemisphere_image_urls'] = hemisphere_image_urls
 
     browser.quit()
 
-    return news_title, news_p, featured_image_url, mars_weather, html_table, hemisphere_image_urls
+    return mars_info
 
 
 
