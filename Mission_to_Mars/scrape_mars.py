@@ -67,7 +67,7 @@ def mars_weather():
     mars_info['mars_weather'] = mars_weather
 
     return mars_info
-    browswer.quit()
+    browser.quit()
 
 # Mars Facts
 def mars_facts():
@@ -75,7 +75,7 @@ def mars_facts():
     df = tables[0]
     df.columns = ['Metric', 'Value']
     df.head()
-    html_table = df.to_html()
+    html_table = df.to_html(index=False)
     mars_info['mars_facts'] = html_table
 
     return mars_info
@@ -109,10 +109,10 @@ def mars_hemi():
         browser.visit(url_USGS)
     
         hemisphere_image_urls.append(hemisphere_image)
-        mars_info['hemisphere_image_urls'] = hemisphere_image_urls
+    mars_info['hemisphere_image_urls'] = hemisphere_image_urls
         
-        return mars_info
-        browser.quit()
+    return mars_info
+    browser.quit()
 
 
 
