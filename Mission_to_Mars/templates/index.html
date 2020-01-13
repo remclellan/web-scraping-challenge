@@ -19,22 +19,22 @@
     <!-- Mars News -->
     <div class="container" id="mars-news">
           <h3>Latest Mars News</h3>
-          <h6>{{ mars_info.news_title }}</h6>
-          <p>{{ mars_info.news_p }}</p>
+          <h6>{{ mars_results.news_title }}</h6>
+          <p>{{ mars_results.news_p }}</p>
     </div>
 
     <div class="container" id="mars-featured_image-weather">
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-12" id="mars-featured_image">
                 <h3>Featured Mars Image</h3>
-                <img src="{{ mars_info.featured_image_url }}" alt="Featured Mars Image">
+                <img src="{{ mars_results.featured_image_url }}" alt="Featured Mars Image">
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <h6>Current Weather on Mars</h6>
-                <p>{{ mars_info.mars_weather }}</p>
+                <p>{{ mars_results.mars_weather }}</p>
                 <br>
                 <h6>Mars Facts</h6>
-                {{ mars_info.html_table}}
+                {{ mars_results.mars_facts }}
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                {% for image in mars_info.hemisphere_image_urls}
+                {% for image in mars_results.hemisphere_image_urls %}
                 <div class="col-md-6">
                     <img src="{{ image.img_url }}">
                     <p>{{ image.title }}</p>

@@ -27,7 +27,11 @@ def scraper():
 
     # scrape_mars.scrape() is a custom function that we've defined in the scrape_mars.py file within this directory
     mars_info
-    mars_data = scrape_mars.scrape_mars()
+    mars_data = scrape_mars.mars_news()
+    mars_data = scrape_mars.featured_image()
+    mars_data = scrape_mars.mars_weather()
+    mars_data = scrape_mars.mars_facts()
+    mars_data = scrape_mars.mars_hemi()
     mars_info.update({},mars_data, upsert=True)
     
     # Use Flask's redirect function to send us to a different route once this task has completed.

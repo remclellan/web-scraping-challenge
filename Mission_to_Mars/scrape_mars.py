@@ -12,17 +12,16 @@ def init_browser():
 # create dictionary variable to import to MongoDB
 mars_info = {}
 
-def scrape_mars():
+# define variables for each URL to scrape
+url_nasa = 'https://mars.nasa.gov/news/'
+url_jpl = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+url_weather = 'https://twitter.com/marswxreport?lang=en'
+url_facts = 'https://space-facts.com/mars/'
+url_USGS = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+
+# NASA Mars News
+def mars_news():
     browser = init_browser()
-
-    # define variables for each URL to scrape
-    url_nasa = 'https://mars.nasa.gov/news/'
-    url_jpl = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-    url_weather = 'https://twitter.com/marswxreport?lang=en'
-    url_facts = 'https://space-facts.com/mars/'
-    url_USGS = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-
-    # NASA Mars News
     browser.visit(url_nasa)
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
@@ -32,7 +31,12 @@ def scrape_mars():
     mars_info['news_title'] = news_title
     mars_info['news_p'] = news_p
 
-    # JPL Mars Featured Image
+    return mars_info
+    browser.quit()
+
+# JPL Mars Featured Image
+def featured_image():
+    browser = init_browser()
     browser.visit(url_jpl)
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
@@ -49,7 +53,12 @@ def scrape_mars():
     featured_image_url = urljoin(url_jpl, img_partialpath)
     mars_info['featured_image_url'] = featured_image_url
 
-    # Mars Weather
+    return mars_info
+    browser.quit()
+
+# Mars Weather
+def mars_weather():
+    browser = init_browser()
     browser.visit(url_weather)    
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
@@ -57,16 +66,23 @@ def scrape_mars():
     mars_weather = div.find('p').text
     mars_info['mars_weather'] = mars_weather
 
-    # Mars Facts
+    return mars_info
+    browswer.quit()
+
+# Mars Facts
+def mars_facts():
     tables = pd.read_html(url_facts)
     df = tables[0]
     df.columns = ['Metric', 'Value']
     df.head()
     html_table = df.to_html()
-    html_table
-    mars_info['html_table'] = html_table
+    mars_info['mars_facts'] = html_table
 
-    # Mars Hemispheres
+    return mars_info
+
+# Mars Hemispheres
+def mars_hemi():
+    browser = init_browser()
     browser.visit(url_USGS)
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
@@ -94,10 +110,10 @@ def scrape_mars():
     
         hemisphere_image_urls.append(hemisphere_image)
         mars_info['hemisphere_image_urls'] = hemisphere_image_urls
+        
+        return mars_info
+        browser.quit()
 
-    browser.quit()
-
-    return mars_info
 
 
 
